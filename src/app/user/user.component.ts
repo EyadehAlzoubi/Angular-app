@@ -10,6 +10,7 @@ import {type User} from './user.modle';
 export class UserComponent {
 
   @Input({required:true}) user!:User;
+  @Input({required:true}) selected!:boolean;
   @Output() select = new EventEmitter<string>();
 
   // select = output<string>();
