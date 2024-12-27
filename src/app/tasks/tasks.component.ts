@@ -2,6 +2,7 @@ import { Component ,Input} from '@angular/core';
 import { TaskComponent } from "./task/task.component";
 import { NewTaskComponent } from "./new-task/new-task.component";
 import { NewTaskData } from './task/task.modle';
+import { TasksService } from './tasks.service';
 
 
 @Component({
@@ -14,62 +15,32 @@ export class TasksComponent {
   @Input({required:true}) userId!:string;
   @Input({required:true}) name!:string;
   isAddingTask =false;
+  private tasksService: TasksService;
 
-  tasks = [
-    {
-      id:'t1',
-      userId:'u1',
-      title:'Eyadah alzoubi0',
-      summary:"eyadah alzoubi hhhhh",
-      dueDate:'2001-05-15'
-    },
-    {
-      id:'t2',
-      userId:'u3',
-      title:'Eyadah alzoubi1',
-      summary:"eyadah alzoubi hhhhh",
-      dueDate:'2001-05-15'
-    },
-    {
-      id:'t3',
-      userId:'u3',
-      title:'Eyadah alzoubi2',
-      summary:"eyadah alzoubi hhhhh",
-      dueDate:'2001-05-15'
-    },
-    {
-      id:'t4',
-      userId:'u2',
-      title:'Eyadah alzoubi3',
-      summary:"eyadah alzoubi hhhhh",
-      dueDate:'2001-05-15'
-    },
-  ];
+  constructor(tasksService:TasksService){
+    this.tasksService =tasksService;
+  }
+
+
 
   get selectedUserTasks(){
-    return this.tasks.filter((task) => task.userId === this.userId);
+    return this.tasksService.getUserTasks(this.userId);
   }
 
-  onCompleteTask(id:string){
-    this.tasks = this.tasks.filter((task) => task.id !== id)
-  }
+  // onCompleteTask(id:string){
+  //   // this.tasksService.removeTask(id);
+  // }
 
   onStartAddTask(){
     this.isAddingTask = true;
   }
 
-  onCansleTask(){
+  onCloseTask(){
     this.isAddingTask =false;
   }
 
-  onAddTask(taskData:NewTaskData){
-    this.tasks.push({
-      id:new Date().getTime().toString(),
-      userId:this.userId,
-      title:taskData.title,
-      summary:taskData.summary,
-      dueDate:taskData.date,
-    })
-    this.isAddingTask=false;
-  }
+  // onAddTask(taskData:NewTaskData){
+  //   this.tasksService.addTask(taskData,this.userId);
+  //   this.isAddingTask=false;
+  // }
 }
